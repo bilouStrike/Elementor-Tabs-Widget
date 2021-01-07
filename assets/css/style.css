@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+body {
+	background-color: #f5f5f5;
+}
+
+.tabs {
+	display: flex;
+	background: #fff;
+}
+
+.tabs__content {
+	display: flex;
+	justify-content: space-between;
+	width: 70%;
+	flex-grow: 1;
+	margin: 203px 30px 0px 58px;
+}
+
+.tabs__description {
+	width: 49.67%;
+	text-align: center;
+	font-family: 'Roboto', sans-serif;
+}
+
+.tabs__description p {
+	font-style: normal;
+	font-weight: normal;
+	font-size: 21px;
+	line-height: 26px;
+	text-align: center;
+	letter-spacing: 0.3px;
+	margin: 0px;
+	color: #58595B;
+}
+
+.tabs__CTA {
+	height: 45px;
+    background: #00599A;
+    font-size: 12px;
+	text-transform: uppercase;
+	padding: 15px 56px 16px;
+	margin-top: 65px;
+	color: #FFFFFF;
+	border: none;
+}
+
+.tabs__list {
+	text-align: center;
+	width: 24.30%;
+	margin-left: 85px;
+	margin-top: 60px;
+	margin-bottom: 50px;
+	padding-bottom: 30px;
+}
+
+.tabs__list h2 {
+	font-family: 'Roboto', sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 25px;
+	line-height: 44px;
+	text-align: center;
+	color: #00263E;
+}
+
+.tabs__list ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.tabs__list ul li {
+	font-family: 'Roboto', sans-serif;
+	padding:10px 30px;
+	font-size: 15px;
+	line-height: 20px;
+	letter-spacing: 0.59px;
+    color: #75787B;
+    cursor: pointer;
+}
+
+.tabs__list .active {
+	background: #F1F0F0;
+	color: #00599A;
+	border-left-color: #00599A;
+	border-left-style: solid;
+	border-left-width: 3px;;
+}
+
+.tabs__image {
+    width: 49.34%;
+}
+
+.tabs__image img {
+    width: 100%;
+}
+
+

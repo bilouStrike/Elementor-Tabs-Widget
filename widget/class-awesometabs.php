@@ -16,7 +16,8 @@ class Awesometabs extends Widget_Base {
 	public function __construct( $data = array(), $args = null ) {
 		parent::__construct( $data, $args );
 		wp_enqueue_style( 'awesometabs', plugins_url( '/assets/css/style.css', dirname( __FILE__ ) ), array(), '1.0.0' );
-		wp_register_script( 'awesometabs-js', plugins_url( '/assets/js/tabs-script.js', dirname( __FILE__ ) ),  array('jquery'), null, true );
+		//wp_register_script( 'awesometabs-js', plugins_url( '/assets/js/tabs-script.js', dirname( __FILE__ ) ),  array('jquery'), null, true );
+		wp_register_script( 'awesometabs-js', plugins_url( '/assets/js/tabs-script.js', dirname( __FILE__ ) ), [ 'elementor-frontend' ], '1.0.0', true );
 	}
 
 
@@ -140,9 +141,18 @@ class Awesometabs extends Widget_Base {
 		$repeater->add_control(
 			'tab_button_text',
 			[
-				'label' => __( 'Color', 'awesome-tabs' ),
+				'label' => __( 'CTA button', 'awesome-tabs' ),
 				'type' => \Elementor\Controls_Manager::TEXT,
 				'default' => __( 'Button Text Here' , 'awesome-tabs' ),
+			]
+		);
+
+		$repeater->add_control(
+			'tab_button_url',
+			[
+				'label' => __( 'Button URL', 'awesome-tabs' ),
+				'type' => \Elementor\Controls_Manager::URL,
+				'placeholder' => __( 'Your Link Here', 'awesome-tabs' ),
 			]
 		);
 
@@ -157,9 +167,17 @@ class Awesometabs extends Widget_Base {
 		$this->add_control(
 			'tabs',
 			[
-				'label' => __( 'Repeater List', 'awesome-tabs' ),
+				'label' => __( 'Add Your Tabs', 'awesome-tabs' ),
 				'type' => \Elementor\Controls_Manager::REPEATER,
 				'fields' => $repeater->get_controls(),
+				'default' => [
+					[
+						'tab_title' => __( 'TAB Title Here #1', 'awesome-tabs' ),
+						'tab_content' => __( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. ', 'awesome-tabs' ),
+						'tab_button_text' => __( 'Tab Buton Text Here', 'awesome-tabs' ),
+					],
+				],
+				'title_field' => '{{{ tab_title }}}',
 			]
 		);
 
@@ -210,7 +228,8 @@ class Awesometabs extends Widget_Base {
 
 						$this->add_render_attribute( $tab_content_setting_key);
 						$this->add_render_attribute( $tab_button_text_setting_key, [
-							'class' => ['tabs__CTA']
+							'class' => ['tabs__CTA'],
+							'href' => $content['tab_button_url'] 
 						]);
 
 						$this->add_inline_editing_attributes( $tab_content_setting_key, 'advanced' );
@@ -223,7 +242,7 @@ class Awesometabs extends Widget_Base {
 								'
 									<div class="tabs__description">
 										<p %1$s> %2$s </p>
-										<button %3$s > %4$s </button>
+										<a %3$s > %4$s </a>
 									</div>
 									<div class="tabs__image">
 										<img src="%5$s" />
@@ -278,7 +297,8 @@ class Awesometabs extends Widget_Base {
 
 						view.addRenderAttribute( tabContentKey );
 						view.addRenderAttribute( tabButtonTextKey,  {
-							'class': [ 'tabs__CTA' ],
+							'class' : [ 'tabs__CTA' ],
+							'href' : item.tab_button_url ? item.tab_button_url : ''
 						} );
 
 						view.addInlineEditingAttributes( tabContentKey, 'advanced' );
@@ -289,7 +309,7 @@ class Awesometabs extends Widget_Base {
 						<div class="tabs__content" data-id="{{ item._id }}">
 							<div class="tabs__description">
 								<p {{{ view.getRenderAttributeString( tabContentKey )  }}}> {{{ item.tab_content }}} </p>
-								<button {{{ view.getRenderAttributeString( tabButtonTextKey )  }}}> {{{ item.tab_button_text }}} </button>
+								<a {{{ view.getRenderAttributeString( tabButtonTextKey )  }}}> {{{ item.tab_button_text }}} </a>
 							</div>
 							<div class="tabs__image">
 								<img src="{{{ tabContentImageUrl }}}" />

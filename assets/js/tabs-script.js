@@ -1,5 +1,6 @@
-(function() {
-	jQuery(document).ready(function() {
+jQuery( window ).on(
+	'elementor/frontend/init',
+	() => {
 		let tabsContent = jQuery('.tabs .tabs__content');
 
 		// Keep only the dirst tab content open
@@ -29,5 +30,5 @@
 				}
 			});
 		}
-	});
-})(jQuery);
+	}
+);

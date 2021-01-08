@@ -15,6 +15,8 @@ body {
 	width: 70%;
 	flex-grow: 1;
 	margin: 203px 30px 0px 58px;
+	padding-bottom: 20px;
+	animation: fadein 1s;
 }
 
 .tabs__description {
@@ -31,16 +33,15 @@ body {
 	text-align: center;
 	letter-spacing: 0.3px;
 	margin: 0px;
+	margin-bottom: 65px;
 	color: #58595B;
 }
 
-.tabs__CTA {
-	height: 45px;
+.tabs__description .tabs__CTA {
     background: #00599A;
     font-size: 12px;
 	text-transform: uppercase;
 	padding: 15px 56px 16px;
-	margin-top: 65px;
 	color: #FFFFFF;
 	border: none;
 }
@@ -76,16 +77,22 @@ body {
 	font-size: 15px;
 	line-height: 20px;
 	letter-spacing: 0.59px;
-    color: #75787B;
-    cursor: pointer;
+	color: #75787B;
+	cursor: pointer;
+	background: linear-gradient(to right, #F1F0F0 50%, white 50%);
+	background-size: 200% 100%;
+	background-position: right bottom;
+	border-left-color: #fff;
+	border-left-style: solid;
+	transition: background-position .7s ease-out, border-left-width .15s ease-out, border-left-color 0.5s ease-out;
 }
 
 .tabs__list .active {
-	background: #F1F0F0;
+	background-position: left bottom;
 	color: #00599A;
 	border-left-color: #00599A;
 	border-left-style: solid;
-	border-left-width: 3px;;
+	border-left-width: 3px;
 }
 
 .tabs__image {
@@ -94,6 +101,12 @@ body {
 
 .tabs__image img {
     width: 100%;
+}
+
+@keyframes fadein {
+    0% { opacity: .25; }
+	50% { opacity: .80; }
+    100%   { opacity: 1; }
 }
 
 

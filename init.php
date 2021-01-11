@@ -4,7 +4,6 @@
 add_action( 'plugins_loaded', 'init' );
 
 function init() {
-
     // Check if Elementor installed and activated.
 	if ( ! did_action( 'elementor/loaded' ) ) {
 		add_action( 'admin_notices', 'admin_notice_missing_main_plugin' );
@@ -14,7 +13,7 @@ function init() {
 }
 
 /**
-* Admin notice
+* Admin notice callback
 */
 function admin_notice_missing_main_plugin() {
     ?>

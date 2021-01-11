@@ -1,6 +1,7 @@
 jQuery( window ).on(
 	'elementor/frontend/init',
 	() => {
+		console.log('js loader');
 		let tabsContent = jQuery('.tabs .tabs__content');
 
 		// Keep only the dirst tab content open
@@ -14,7 +15,7 @@ jQuery( window ).on(
 		jQuery(".tabs__list li").click(function() {
 			let tabsList = jQuery('.tabs__items li');
 			let tabIndex = jQuery(this).attr('data-id');
-			tabsList.map(function(index,val) {
+			tabsList.map(function() {
 				jQuery(this).removeClass('active');
 				tabsContent.hide();
 			});
@@ -23,7 +24,7 @@ jQuery( window ).on(
 		});
 
 		function displayTabsContent(tabIndex) {
-			tabsContent.map(function(index,val) {
+			tabsContent.map(function() {
 				if (jQuery(this).attr('data-id') == tabIndex) {
 					jQuery(this).show().fadeIn();
 					return;

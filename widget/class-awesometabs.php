@@ -16,7 +16,7 @@ class Awesometabs extends Widget_Base {
 	public function __construct( $data = array(), $args = null ) {
 		parent::__construct( $data, $args );
 		wp_enqueue_style( 'awesometabs', plugins_url( '/assets/css/style.css', dirname( __FILE__ ) ), array(), '1.0.0' );
-		//wp_register_script( 'awesometabs-js', plugins_url( '/assets/js/tabs-script.js', dirname( __FILE__ ) ),  array('jquery'), null, true );
+		wp_enqueue_style( 'load-fas', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );
 		wp_register_script( 'awesometabs-js', plugins_url( '/assets/js/tabs-script.js', dirname( __FILE__ ) ), [ 'elementor-frontend' ], '1.0.0', true );
 	}
 
@@ -208,12 +208,14 @@ class Awesometabs extends Widget_Base {
 								$tab_title_setting_key = $this->get_repeater_setting_key( 'tab_title', 'tabs', $index );
 
 								$this->add_render_attribute( $tab_title_setting_key, [
-									'data-id' => [$tab['_id']]
+									'data-id' => [$tab['_id']],
+									'class' => $index === 0 ? 'active' : ''
 								] );
 								$this->add_inline_editing_attributes( $tab_title_setting_key, 'advanced' );
 								?>
 									<li <?php echo $this->get_render_attribute_string( $tab_title_setting_key ) ?> >
-										<?php echo $tab['tab_title'] ; ?>
+										<span> <?php echo esc_html( $tab['tab_title'] ) ; ?> </span>
+										<i class="fa fa-check-circle"></i>
 									</li>
 								<?php
 							}
@@ -236,25 +238,24 @@ class Awesometabs extends Widget_Base {
 						$this->add_inline_editing_attributes( $tab_button_text_setting_key, 'advanced' );
 
 						?>
-							<div class="tabs__content" data-id=<?php echo  $content['_id'] ?>>
-							<?php
-								printf(
-								'
-									<div class="tabs__description">
-										<p %1$s> %2$s </p>
-										<a %3$s > %4$s </a>
-									</div>
-									<div class="tabs__image">
-										<img src="%5$s" />
-									</div>
-								',
-								$this->get_render_attribute_string( $tab_content_setting_key ),
-								esc_html( $content['tab_content'] ),
-								$this->get_render_attribute_string( $tab_button_text_setting_key ),
-								esc_html( $content['tab_button_text']),
-								esc_url( $content['tab_image']['url'] ),
-								);
-							?>
+							<div class="tabs__content" data-id=<?php echo esc_attr( $content['_id'] ) ?>>
+								<?php
+									printf(
+									'	<div class="tabs__description">
+											<p %1$s> %2$s </p>
+											<a %3$s > %4$s </a>
+										</div>
+										<div class="tabs__image">
+											<img src="%5$s" />
+										</div>
+									',
+									$this->get_render_attribute_string( $tab_content_setting_key ),
+									esc_html( $content['tab_content'] ),
+									$this->get_render_attribute_string( $tab_button_text_setting_key ),
+									esc_html( $content['tab_button_text']),
+									esc_url( $content['tab_image']['url'] ),
+									);
+								?>
 							</div>
 						<?php
 					}
@@ -283,9 +284,16 @@ class Awesometabs extends Widget_Base {
 					<# if ( settings.tabs.length ) { #>
 						<ul class="tabs__items">
 							<# _.each( settings.tabs, function( item, index ) { 
-								var tabTitletKey = view.getRepeaterSettingKey( 'tab_title', 'tabs',index );
+								var tabTitletKey = view.getRepeaterSettingKey( 'tab_title', 'tabs', index );
+
+								view.addRenderAttribute( tabTitletKey,  {
+									'data-id' : [ item._id ],
+									'class' : index === 1 ? 'active' : ''
+								} );
+
+								view.addInlineEditingAttributes( tabTitletKey, 'advanced' );
 							#>
-								<li {{{ view.getRenderAttributeString( tabTitletKey ) }}} data-id="{{ item._id }}">{{{ item.tab_title }}}</li>
+								<li {{{ view.getRenderAttributeString( tabTitletKey ) }}} >{{{ item.tab_title }}}</li>
 							<# }); #>
 						</ul>
 					<# } #>

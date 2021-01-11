@@ -16,7 +16,6 @@ class Awesometabs extends Widget_Base {
 	public function __construct( $data = array(), $args = null ) {
 		parent::__construct( $data, $args );
 		wp_enqueue_style( 'awesometabs', plugins_url( '/assets/css/style.css', dirname( __FILE__ ) ), array(), '1.0.0' );
-		wp_enqueue_style( 'load-fas', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );
 		wp_register_script( 'awesometabs-js', plugins_url( '/assets/js/tabs-script.js', dirname( __FILE__ ) ), [ 'elementor-frontend' ], '1.0.0', true );
 	}
 
@@ -133,7 +132,7 @@ class Awesometabs extends Widget_Base {
 		$repeater->add_control(
 			'tab_content', [
 				'label' => __( 'Content', 'awesome-tabs' ),
-				'type' => \Elementor\Controls_Manager::WYSIWYG,
+				'type' => \Elementor\Controls_Manager::TEXTAREA,
 				'default' => __( 'Tab content' , 'awesome-tabs' ),
 			]
 		);
@@ -142,7 +141,7 @@ class Awesometabs extends Widget_Base {
 			'tab_button_text',
 			[
 				'label' => __( 'CTA button', 'awesome-tabs' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
+				'type' => \Elementor\Controls_Manager::TEXTAREA,
 				'default' => __( 'Button Text Here' , 'awesome-tabs' ),
 			]
 		);
@@ -211,11 +210,11 @@ class Awesometabs extends Widget_Base {
 									'data-id' => [$tab['_id']],
 									'class' => $index === 0 ? 'active' : ''
 								] );
-								$this->add_inline_editing_attributes( $tab_title_setting_key, 'advanced' );
+								//$this->add_inline_editing_attributes( $tab_title_setting_key, 'advanced' );
 								?>
 									<li <?php echo $this->get_render_attribute_string( $tab_title_setting_key ) ?> >
-										<span> <?php echo esc_html( $tab['tab_title'] ) ; ?> </span>
-										<i class="fa fa-check-circle"></i>
+										<span> <?php echo wp_kses_post( $tab['tab_title'] ) ; ?> </span>
+										<img src="<?php echo plugins_url( '/assets/img/check.png', dirname( __FILE__ ) ) ?>">
 									</li>
 								<?php
 							}
@@ -242,7 +241,7 @@ class Awesometabs extends Widget_Base {
 								<?php
 									printf(
 									'	<div class="tabs__description">
-											<p %1$s> %2$s </p>
+											<div %1$s> %2$s </div>
 											<a %3$s > %4$s </a>
 										</div>
 										<div class="tabs__image">
@@ -250,7 +249,7 @@ class Awesometabs extends Widget_Base {
 										</div>
 									',
 									$this->get_render_attribute_string( $tab_content_setting_key ),
-									esc_html( $content['tab_content'] ),
+									wp_kses_post( $content['tab_content'] ),
 									$this->get_render_attribute_string( $tab_button_text_setting_key ),
 									esc_html( $content['tab_button_text']),
 									esc_url( $content['tab_image']['url'] ),
@@ -293,7 +292,7 @@ class Awesometabs extends Widget_Base {
 
 								view.addInlineEditingAttributes( tabTitletKey, 'advanced' );
 							#>
-								<li {{{ view.getRenderAttributeString( tabTitletKey ) }}} >{{{ item.tab_title }}}</li>
+								<li>{{{ item.tab_title }}}</li>
 							<# }); #>
 						</ul>
 					<# } #>
@@ -310,13 +309,13 @@ class Awesometabs extends Widget_Base {
 						} );
 
 						view.addInlineEditingAttributes( tabContentKey, 'advanced' );
-						view.addInlineEditingAttributes( tabButtonTextKey, 'advanced' );
+						view.addInlineEditingAttributes( tabButtonTextKey, 'none' );
 
 						var tabContentImageUrl = item.image ?  item.image : '';
 						#>
 						<div class="tabs__content" data-id="{{ item._id }}">
 							<div class="tabs__description">
-								<p {{{ view.getRenderAttributeString( tabContentKey )  }}}> {{{ item.tab_content }}} </p>
+								<div {{{ view.getRenderAttributeString( tabContentKey )  }}}> {{{ item.tab_content }}} </div>
 								<a {{{ view.getRenderAttributeString( tabButtonTextKey )  }}}> {{{ item.tab_button_text }}} </a>
 							</div>
 							<div class="tabs__image">

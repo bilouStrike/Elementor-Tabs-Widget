@@ -1,35 +1,40 @@
 jQuery( window ).on(
 	'elementor/frontend/init',
 	() => {
-		console.log('js loader');
-		let tabsContent = jQuery('.tabs .tabs__content');
+		const TabsHandler = () => {
 
-		// Keep only the dirst tab content open
-		tabsContent.map(function(index,val) {
-			if (index != 0) {
-				jQuery(this).hide();
+			jQuery('.tabs').map(function(index, val) {
+				jQuery(val).children().slice(2).hide();
+			});
+
+			// listen for click event
+			jQuery(".tabs__list li").click(function() {
+				const $this = jQuery( this );
+				const tabIndex = jQuery(this).attr('data-id');
+				const tabsContent = $this.closest('.tabs').children().slice(1);
+				const tabsList = $this.parent().children();
+				tabsList.map(function() {
+					jQuery(this).removeClass('active');
+					tabsContent.hide();
+				});
+				jQuery(this).addClass('active');
+				displayTabsContent(tabIndex, tabsContent);
+			});
+
+			// display tab content
+			function displayTabsContent(tabIndex, tabsContent) {
+				tabsContent.map(function() {
+					if (jQuery(this).attr('data-id') == tabIndex) {
+						jQuery(this).show().fadeIn();
+						return;
+					}
+				});
 			}
-		});
 
-		// listen for click event
-		jQuery(".tabs__list li").click(function() {
-			let tabsList = jQuery('.tabs__items li');
-			let tabIndex = jQuery(this).attr('data-id');
-			tabsList.map(function() {
-				jQuery(this).removeClass('active');
-				tabsContent.hide();
-			});
-			jQuery(this).addClass('active');
-			displayTabsContent(tabIndex);
-		});
+		};
 
-		function displayTabsContent(tabIndex) {
-			tabsContent.map(function() {
-				if (jQuery(this).attr('data-id') == tabIndex) {
-					jQuery(this).show().fadeIn();
-					return;
-				}
-			});
-		}
-	}
-);
+		elementorFrontend.hooks.addAction(
+			'frontend/element_ready/awesometabs.default',
+			TabsHandler
+		);
+});
